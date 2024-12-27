@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OTP Playground</title>
+  <title>Login and OTP Playground</title>
   <style>
+    /* General Styles */
     body {
       font-family: Arial, sans-serif;
       display: flex;
@@ -14,21 +15,26 @@
       margin: 0;
       background-color: #f4f4f9;
     }
-    .otp-container {
+
+    .container {
       text-align: center;
       border: 1px solid #ddd;
       border-radius: 8px;
       padding: 20px;
       background: #fff;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
     }
-    input[type="text"] {
+
+    input[type="text"], input[type="password"] {
       padding: 10px;
       font-size: 16px;
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      width: 80%;
     }
+
     button {
       margin-top: 10px;
       padding: 10px 20px;
@@ -39,43 +45,86 @@
       color: #fff;
       border-radius: 4px;
     }
+
     .message {
       margin-top: 15px;
       font-size: 14px;
     }
+
     .success {
       color: green;
     }
+
     .error {
       color: red;
     }
   </style>
 </head>
 <body>
-  <div class="otp-container">
-    <h2>Enter OTP</h2>
-    <p><strong>Static OTP: 1234</strong></p>
-    <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="4">
-    <br>
-    <button onclick="validateOTP()">Submit OTP</button>
-    <p id="message" class="message"></p>
+
+  <!-- Container -->
+  <div class="container" id="container">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <br>
+      <input type="password" id="password" placeholder="Password">
+      <br>
+      <button onclick="validateLogin()">Login</button>
+      <p id="loginMessage" class="message"></p>
+    </div>
+
+    <!-- OTP Form (Hidden by Default) -->
+    <div id="otpForm" style="display: none;">
+      <h2>Enter OTP</h2>
+      <p><strong>Static OTP: 1234</strong></p>
+      <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="4">
+      <br>
+      <button onclick="validateOTP()">Submit OTP</button>
+      <p id="otpMessage" class="message"></p>
+    </div>
   </div>
 
   <script>
+    // Static Credentials
+    const staticUsername = 'user';
+    const staticPassword = 'password';
     const staticOTP = '1234';
 
+    // Validate Login
+    function validateLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const loginMessage = document.getElementById('loginMessage');
+
+      if (username === staticUsername && password === staticPassword) {
+        loginMessage.textContent = '✅ Login Successful!';
+        loginMessage.className = 'message success';
+
+        // Show OTP Form and Hide Login Form
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('otpForm').style.display = 'block';
+      } else {
+        loginMessage.textContent = '❌ Invalid Username or Password';
+        loginMessage.className = 'message error';
+      }
+    }
+
+    // Validate OTP
     function validateOTP() {
       const otpInput = document.getElementById('otpInput').value;
-      const message = document.getElementById('message');
+      const otpMessage = document.getElementById('otpMessage');
 
       if (otpInput === staticOTP) {
-        message.textContent = '✅ OTP Verified Successfully!';
-        message.className = 'message success';
+        otpMessage.textContent = '✅ OTP Verified Successfully!';
+        otpMessage.className = 'message success';
       } else {
-        message.textContent = '❌ Invalid OTP. Please try again.';
-        message.className = 'message error';
+        otpMessage.textContent = '❌ Invalid OTP. Please try again.';
+        otpMessage.className = 'message error';
       }
     }
   </script>
+
 </body>
 </html>
